@@ -1,0 +1,26 @@
+Project details: A telegram bot where user refers and earn and also do micro jobs and earn
+
+Project Requirements:
+
+    1. Api to interact with all the saved data in database (should use nodejs for api and mongodb for database)
+    2. Admin panel wwhere admin can do anything with any user or tasks(should use react)
+    3. Telegram bot where users will register and refers and do task and submit so that admin can review and then mark as completed or deny(should use nodejs and telegraf package and use scene system)
+
+user database: userID, total_reffered, total_task_completed, withdrawable_earning,  total_earned, refer_link
+task database: task_no, task_description, task_image_link(optional), task_video_link(optional), reward
+submitted_task database: task_no, user_who_submitted, task_status
+
+Admin panel:
+    1. Login page to login as admin
+    2. users page to see all users, crud functions, also there will be a task page for each user where admin can see all tasks submitted by that user and can crud that
+    3. Tasks page: crud tasks
+    4. Task review page: review system for all tasks submitted
+
+
+Telegram bot:
+    Should show all instructions needed for user to interact easily, use emojis
+
+
+
+    git config --global user.name "melodic456"
+git config --global user.email "Ruben.Wheller5551@proton.me"

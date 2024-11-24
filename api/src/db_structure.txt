@@ -1,0 +1,296 @@
+Collection Name: admindb
+Collection Info: {
+  name: 'admindb',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("206400a0-fdf5-48b3-b5c3-41287ad50af5")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  {
+    _id: new ObjectId("673301bf49d997620917cea4"),
+    admin: 'admin',
+    ref: 1,
+    cur: 'TK',
+    paychannel: '@habijabi34',
+    bonus: 0.1,
+    minimum: 1,
+    botstat: 'Active',
+    withstat: 'ON',
+    subwallet: 'NOT SET',
+    MKEY: 'NOT SET',
+    MID: 'NOT SET',
+    channels: []
+  }
+]
+Stats: {
+  documentCount: 1,
+  dataSize: 226,
+  storageSize: 20480,
+  indexCount: 1,
+  indexDetails: { _id_: 20480 },
+  avgDocumentSize: 226
+}
+
+Collection Name: taskProofs
+Collection Info: {
+  name: 'taskProofs',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("36ad12b9-28c9-40c5-aba8-6f058b715e09")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  {
+    _id: new ObjectId("673304ff11c4b363d03f086a"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'dfsdf dfdsf' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:34:23.975Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("6733057403ed3ae272e31d5d"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'dasfsdfs sdvsd' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:36:20.368Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("673305efb13a636da725a55f"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'efawfdw  sdefe' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:38:23.653Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("673306445cdbfe3c9a992409"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'erer' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:39:48.018Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("673306bef4da9f8a12aaa92c"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'afsafaf' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:41:50.325Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("673307f26f117abe11c5349d"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'sdasdav sdfd sdfgdsg' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:46:58.142Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("67330972569c2e763e297f20"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'dsfsdf' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:53:22.205Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("67330a11598e57a7c67e670c"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'wdawfaeff' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:56:01.328Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("67330a62e4be2229b35100b2"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'jhfuyjfyi' },
+    reviewed: true,
+    timestamp: 2024-11-12T07:57:22.542Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("673312a0e4be2229b35100b3"),
+    userId: 7374728124,
+    taskId: '673304d611c4b363d03f0868',
+    proof: { text: 'ggig' },
+    reviewed: true,
+    timestamp: 2024-11-12T08:32:32.009Z,
+    status: 'approved'
+  },
+  {
+    _id: new ObjectId("67345069a73e5a72f6a4c187"),
+    userId: 7374728124,
+    taskId: '67344fcba73e5a72f6a4c186',
+    proof: { text: 'tur5uioyo97vv  o9797p' },
+    reviewed: true,
+    timestamp: 2024-11-13T07:08:25.819Z,
+    status: 'approved'
+  }
+]
+Stats: {
+  documentCount: 11,
+  dataSize: 1758,
+  storageSize: 36864,
+  indexCount: 1,
+  indexDetails: { _id_: 36864 },
+  avgDocumentSize: 159
+}
+
+Collection Name: allUsers
+Collection Info: {
+  name: 'allUsers',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("8f1283a0-46c0-41c7-a54f-6964be4c80aa")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  {
+    _id: new ObjectId("673301c249d997620917cea5"),
+    userID: 7374728124,
+    balance: 622,
+    toWithdraw: 0,
+    wallet: '43'
+  },
+  {
+    _id: new ObjectId("67344f6da73e5a72f6a4c185"),
+    stats: 'stats',
+    value: 0
+  }
+]
+Stats: {
+  documentCount: 2,
+  dataSize: 132,
+  storageSize: 36864,
+  indexCount: 1,
+  indexDetails: { _id_: 36864 },
+  avgDocumentSize: 66
+}
+
+Collection Name: pendingUsers
+Collection Info: {
+  name: 'pendingUsers',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("a49f784b-556e-425d-b323-14467d8a8d7e")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  { _id: new ObjectId("673301c249d997620917cea7"), userID: 7374728124 }
+]
+Stats: {
+  documentCount: 1,
+  dataSize: 38,
+  storageSize: 20480,
+  indexCount: 1,
+  indexDetails: { _id_: 20480 },
+  avgDocumentSize: 38
+}
+
+Collection Name: balance
+Collection Info: {
+  name: 'balance',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("bc631e2c-8c0d-433d-9c6b-816b527a5850")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  {
+    _id: new ObjectId("67330654a6c92974a9553c33"),
+    userID: 7374728124,
+    balance: 622,
+    toWithdraw: 0
+  }
+]
+Stats: {
+  documentCount: 1,
+  dataSize: 67,
+  storageSize: 36864,
+  indexCount: 1,
+  indexDetails: { _id_: 36864 },
+  avgDocumentSize: 67
+}
+
+Collection Name: tasks
+Collection Info: {
+  name: 'tasks',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("cdb01283-2ff5-4d53-a802-38236b64400d")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  {
+    _id: new ObjectId("67344fcba73e5a72f6a4c186"),
+    description: 'gfjhfgkujglyhl ouol op y;o',
+    reward: 576
+  }
+]
+Stats: {
+  documentCount: 1,
+  dataSize: 78,
+  storageSize: 36864,
+  indexCount: 1,
+  indexDetails: { _id_: 36864 },
+  avgDocumentSize: 78
+}
+
+Collection Name: BonusUsers
+Collection Info: {
+  name: 'BonusUsers',
+  type: 'collection',
+  options: {},
+  info: {
+    readOnly: false,
+    uuid: new UUID("d99457c2-69a0-41f1-8ae7-229c84516635")
+  },
+  idIndex: { v: 2, key: { _id: 1 }, name: '_id_' }
+}
+Documents: [
+  {
+    _id: new ObjectId("673304ea11c4b363d03f0869"),
+    userID: 7374728124,
+    bonus: '2024-11-12T07:34:02.755Z'
+  }
+]
+Stats: {
+  documentCount: 1,
+  dataSize: 74,
+  storageSize: 20480,
+  indexCount: 1,
+  indexDetails: { _id_: 20480 },
+  avgDocumentSize: 74
+}

@@ -1,0 +1,11 @@
+1. Add admin login system
+2. Add media using telegram storageSize
+3. If a task is completed by a user don't show it to him again
+4. Auto approve system:
+
+
+ a switch button in the frontend -- auto
+
+ backend task_type
+
+ auto check and add balance with that
