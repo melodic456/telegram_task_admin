@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
     "axios": "^1.4.0",
     "create-react-app": "^5.0.1",
     "mongodb": "^5.7.0",
