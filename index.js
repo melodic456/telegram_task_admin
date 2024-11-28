@@ -137,7 +137,7 @@ taskMedia.on('text', async (ctx) => {
         return ctx.scene.leave();
     } else if (ctx.message.text.toLowerCase() === 'skip') {
         console.log("Final task object before saving:", ctx.session.task); // Log full task object before saving
-        await saveTaskToDatabase(ctx.session.task); // Save the task to the database
+        await saveTaskTodb(ctx.session.task); // Save the task to the db
         ctx.reply('Task created successfully.', { reply_markup: { remove_keyboard: true } });
         return ctx.scene.leave();
     }
@@ -150,13 +150,13 @@ taskMedia.on(['photo', 'video'], async (ctx) => {
 
     ctx.session.task.media = media;
     console.log("Final task object with media before saving:", ctx.session.task); // Log task object with media
-    await saveTaskToDatabase(ctx.session.task); // Save the task to the database
+    await saveTaskTodb(ctx.session.task); // Save the task to the db
     ctx.reply('Task created successfully with media.', { reply_markup: { remove_keyboard: true } });
     return ctx.scene.leave();
 });
 
-// Helper function to save task to the database
-async function saveTaskToDatabase(task) {
+// Helper function to save task to the db
+async function saveTaskTodb(task) {
     try {
         if (task.description && task.reward) { // Ensure both description and reward are defined
             await db.collection('tasks').insertOne(task);
@@ -477,12 +477,44 @@ function handleNextSubmission(ctx) {
 
 
 
+async function checkUserInGroup(chatId, userId) {
+    try {
+        const chatMember = await bot.telegram.getChatMember(chatId, userId);
 
+        // Check the status of the user
+        if (chatMember.status === 'member' || chatMember.status === 'administrator' || chatMember.status === 'creator') {
+            return true;  // The user is a member, admin, or creator
+        } else {
+            return false; // The user is not a member
+        }
+    } catch (error) {
+        console.error('Error checking user membership:', error);
+        return false;
+    }
+  }
+
+  function extractUsernameFromLink(link) {
+    // Check if the link is a valid string and not empty
+    if (typeof link !== 'string' || link.trim() === '') {
+        console.error('Invalid link provided.');
+        return null;
+    }
+
+    // Match the part after t.me/
+    const match = link.match(/t\.me\/(.+)$/);
+
+    if (match && match[1]) {
+        return `@${match[1]}`; // Prepend '@' to the username
+    }
+
+    console.error('Invalid Telegram link format.');
+    return null; // Return null if the link format is incorrect
+}
 
 // View Tasks Button
 bot.hears('📝 View Tasks', async (ctx) => {
     try {
-        // Fetch all available tasks from the database
+        // Fetch all available tasks from the db
         const tasks = await db.collection('tasks').find().toArray();
 
         // If no tasks are available
@@ -491,25 +523,261 @@ bot.hears('📝 View Tasks', async (ctx) => {
         }
 
         // Display tasks for selection
-        tasks.forEach(task => {
-            ctx.reply(
-                `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
-                {
-                    reply_markup: {
-                        inline_keyboard: [
-                            [
-                                { text: 'Complete Task', callback_data: `completeTask:${task._id}` }
-                            ],
+        // tasks.forEach(task => {
+        //     ctx.reply(
+        //         `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
+        //         {
+        //             reply_markup: {
+        //                 inline_keyboard: [
+        //                     [
+        //                         { text: 'Complete Task', callback_data: `completeTask:${task._id}` }
+        //                     ],
+        //                 ],
+        //             },
+        //         }
+        //     );
+        // });
+//         tasks.forEach(async task => {
+//             // const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
+//             // const buttonAction = task.taskType ? task.link : `completeTask:${task._id}`;
+        
+//             const userId = ctx.from.id; // Get the user ID from the context
+//             console.log(userId)
+//             const channelLink = task.link; // The channel link from the task
+            
+//             // Check if the user is a member of the channel
+//             const isUserMember = await checkUserInGroup(userId, channelLink);
+//             if (isUserMember) {
+//                 return; // Skip this task for the user
+//             }
+//             // const buttonText = task.taskType ? (isUserMember ? 'Go to Link' : 'Join the Channel') : 'Complete Task';
+//             // const buttonAction = task.taskType
+//             //     ? (isUserMember ? task.link : 'Please Join the Channel') 
+//             //     : `completeTask:${task._id}`;
+//             // const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
+//             // const buttonAction = task.taskType ? task.link : `completeTask:${task._id}`;
+//             // ctx.reply(
+//             //     `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
+//             //     {
+//             //         reply_markup: {
+//             //             inline_keyboard: [
+//             //                 [
+//             //                     { text: buttonText, callback_data: buttonAction }
+//             //                 ],
+//             //             ],
+//             //         },
+//             //     }
+//             // );
+//             const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
+//             const buttonAction = task.taskType 
+//                 ? { url: task.link } // If taskType is true, use the URL as the action
+//                 : { callback_data: `completeTask:${task._id}` }; // If taskType is false, use callback data
+        
+//             // Send the task to the user
+//             ctx.reply(
+//                 `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
+//                 {
+//                     reply_markup: {
+//                         inline_keyboard: [
+//                             [
+//                                 { text: buttonText, ...buttonAction } // Dynamically add url or callback_data
+//                             ],
+//                         ],
+//                     },
+//                 }
+//             );
+//         });
+        
+//     } catch (error) {
+//         console.log(error);
+//         ctx.reply('Error fetching tasks.');
+//     }
+// });
+
+
+    tasks.forEach(async (task) => {
+        const userId = ctx.from.id; // Get the user ID from the context
+        const channelLink = task.link; // The channel link from the task
+        // const link = 't.me/habijabi34';
+        const username = extractUsernameFromLink(channelLink);
+        if (username) {
+            console.log(username);  // Output: @habijabi34
+            const isUserMember = await checkUserInGroup(username, userId);
+
+        // If the user is already a member, skip showing the task
+            if (isUserMember) {
+                return; // Skip this task for the user
+            }
+        } else {
+            console.log('Failed to extract username.');
+            // return;
+        }
+        // Check if the user is a member of the channel
+        const taskProofCollection = db.collection('taskProofs');
+        
+
+        // const existingProof = await TaskProof.findOne({ userId: userId, taskId: mongoose.Types.ObjectId(taskId), status: 'approved' });
+        const existingProof = await taskProofCollection.findOne({ userId: userId, taskId: task._id.toString(), status: 'approved' });
+        console.log("this is  " + existingProof + "   " + task._id + "  " + userId)
+        if (existingProof) {
+            // If the user has already completed the task, inform them
+            // await ctx.answerCbQuery('You have already completed this task!');
+            return;
+        }
+
+
+        // Set button text and action based on task type
+        const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
+        const buttonAction = task.taskType 
+            ? { url: task.link } // If taskType is true, use the URL as the action
+            : { callback_data: `completeTask:${task._id}` }; // If taskType is false, use callback data
+
+        console.log(buttonAction, buttonText)
+            // console.log(JSON.stringify(reply_markup, null, 2));
+
+
+        // Send the task to the user
+        ctx.reply(
+            `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
+            {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            { text: buttonText, ...buttonAction }, // Dynamically add url or callback_data
+                            { text: 'Check if Joined', callback_data: `checkJoin:${username}:${task._id}` }
                         ],
-                    },
-                }
-            );
-        });
-    } catch (error) {
+                    ],
+                },
+            }
+        );
+    });
+        } catch (error) {
         console.log(error);
         ctx.reply('Error fetching tasks.');
     }
 });
+
+
+async function updateUserBalance(userId, reward) {
+    try {
+        const balanceCollection = db.collection('balance');
+        const allUsersCollection = db.collection('allUsers');
+        
+        // Find the user's current balance
+        const userBalance = await balanceCollection.findOne({ userID: userId });
+        const allUserBalance = await allUsersCollection.findOne({ userID: userId });
+
+
+        if (userBalance) {
+            // Add the reward to the existing balance
+            await balanceCollection.updateOne(
+                { userID: userId },
+                { $inc: { balance: reward } }
+            );
+            
+            console.log(`Updated balance for user ${userId}: ${reward}`);
+        } else {
+            // If the user does not exist, create a new balance entry
+            // await balanceCollection.insertOne({ userId: userId, balance: reward });
+            console.log(`Created balance entry for user ${userId}: ${reward}`);
+        }
+        if (allUserBalance){
+            await allUsersCollection.updateOne(
+                { userID: userId },
+                { $inc: { balance: reward } }
+            );
+            console.log(`Updated balance for allUserBalance ${userId}: ${reward}`);
+        } else {
+            // If the user does not exist, create a new balance entry
+            // await balanceCollection.insertOne({ userId: userId, balance: reward });
+            console.log(`Created balance entry for allUserBalance ${userId}: ${reward}`);
+        }
+    } catch (error) {
+        console.error('Error updating user balance:', error);
+    }
+}
+
+
+async function getTaskById(taskId) {
+    const tasksCollection = db.collection('tasks');
+    const task = await tasksCollection.findOne({ _id: new ObjectId(taskId) });
+    // await db.collection('taskProofs').findOne({ _id: new ObjectId(submissionId) });
+    console.log("this is task:" + task)
+    return task;
+}
+
+async function insertTaskProof(userId, taskId) {
+    try {
+        const taskProofsCollection = db.collection('taskProofs');
+
+        // Create a proof entry for the task
+        const proofEntry = {
+            userId: userId,
+            taskId: taskId,
+            proof: { text: 'Task Completed' }, // You can add proof details here
+            reviewed: true,
+            timestamp: new Date(),
+            status: 'approved' // Mark as approved
+        };
+
+        // Insert the task proof into the collection
+        await taskProofsCollection.insertOne(proofEntry);
+        console.log(`Task proof inserted for user ${userId}, task ${taskId}`);
+    } catch (error) {
+        console.error('Error inserting task proof:', error);
+    }
+}
+
+// Handle callback for 'Check if Joined' button
+bot.on('callback_query', async (ctx) => {
+    const callbackData = ctx.callbackQuery.data;
+    const userId = ctx.from.id;
+
+    if (callbackData.startsWith('checkJoin:')) {
+        // Extract the username and task ID from the callback data
+        const [, username, taskId] = callbackData.split(':');
+        console.log(`Checking if user ${userId} is in the channel ${username}`);
+        const taskProofCollection = db.collection('taskProofs');
+        
+
+        // const existingProof = await TaskProof.findOne({ userId: userId, taskId: mongoose.Types.ObjectId(taskId), status: 'approved' });
+        const existingProof = await taskProofCollection.findOne({ userId: userId, taskId: taskId, status: 'approved' });
+
+        if (existingProof) {
+            // If the user has already completed the task, inform them
+            await ctx.answerCbQuery('You have already completed this task!');
+            return;
+        }
+
+        // await db.collection("tasks")
+        // Check if the user is a member of the channel
+        const isUserMember = await checkUserInGroup(username, userId);
+
+        if (isUserMember) {
+            await ctx.answerCbQuery('You are a member! Task Completed.'); // Respond to the callback query
+            const task = await getTaskById(taskId);
+            // console.log(task)
+            const reward = task.reward;
+            await updateUserBalance(userId, reward);
+            await insertTaskProof(userId, taskId);
+
+            // Optionally mark the task as completed in your system
+            // You can store that the user has completed this task
+            await ctx.editMessageReplyMarkup({
+                inline_keyboard: [
+                    [
+                        { text: 'Go to Link', url: `https://t.me/${username}` }, // Update with the link button (if needed)
+                        // Optionally remove or replace the "Check if Joined" button here
+                    ]
+                ]
+            });
+        } else {
+            await ctx.answerCbQuery('You are not a member yet. Please join the channel.'); // Inform the user
+        }
+    }
+});
+
+
 
 bot.action(/^completeTask:(.*)$/, async (ctx) => {
     if (!ctx.session) ctx.session = {};
@@ -627,7 +895,7 @@ async function run() {
 
 }
 run().catch(console.dir);
-// mongo.connect('mongodb+srv://DATA1:xixMhPpvLbKh24Ng@cluster0.qnjvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useUnifiedTopology: true }, (err, client) => {
+// mongo.connect('mongodb+srv://DATA1:xixMhPpvLbKh24Ng@cluster0.qnjvk.mongodb.net/myFirstdb?retryWrites=true&w=majority', { useUnifiedTopology: true }, (err, client) => {
 //     if (err) {
 //         console.log(err);
 //     }
@@ -1099,7 +1367,7 @@ bot.action('createTask', (ctx) => {
 bot.action('taskList', async (ctx) => {
     ctx.deleteMessage(); // Clear the previous message
 
-    // Fetch tasks from the database
+    // Fetch tasks from the db
     let tasks = await db.collection('tasks').find().toArray();
 
     if (tasks.length === 0) {
@@ -1148,7 +1416,7 @@ taskEdit.on('text', async (ctx) => {
     const newDescription = ctx.message.text;
     const taskId = ctx.scene.state.taskId;
 
-    // Update task description in the database
+    // Update task description in the db
     await db.collection('tasks').updateOne(
         { _id: new ObjectId(taskId) },
         { $set: { description: newDescription } }
@@ -1163,7 +1431,7 @@ taskEdit.on('text', async (ctx) => {
 bot.action(/^deleteTask:(.*)$/, async (ctx) => {
     const taskId = ctx.match[1];
 
-    // Delete the task from the database
+    // Delete the task from the db
     await db.collection('tasks').deleteOne({ _id: new ObjectId(taskId) });
 
     ctx.reply("Task deleted.");
@@ -1520,7 +1788,7 @@ tgid.hears(/^[0-9]+$/, async (ctx) => {
             let used = await db.collection('balance').find({ userID: user }).toArray()
             if (!data[0]) {
                 ctx.replyWithMarkdown(
-                    '*⛔ User Is Not Registered In Our Database *', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*⛔ User Is Not Registered In Our db *', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 let bal = used[0].balance
@@ -1675,7 +1943,7 @@ removechnl.hears(regex, async (ctx) => {
                 )
             } else {
                 ctx.reply(
-                    '<b>⛔ Channel Not In Our Database</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '<b>⛔ Channel Not In Our db</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
                 )
             }
         } else {

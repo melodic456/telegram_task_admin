@@ -5,5 +5,8 @@ Auto --- add field link where to auto check for submission
 
 3. Auto task link click and direct verificatoion no text
 4. Link and id add in the tasks list section
-5. pagination
+
 6. For auto add the auto check for cvhannels and groups
+
+
+5. pagination

@@ -51,6 +51,7 @@ const BalanceSchema = new mongoose.Schema({
 // Tasks Schema for 'tasks'
 const TaskSchema = new mongoose.Schema({
   description: String,
+  link: String,
   reward: Number,
   taskType: Boolean,
 }, { collection: 'tasks' });

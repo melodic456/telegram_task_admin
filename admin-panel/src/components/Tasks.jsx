@@ -64,18 +64,22 @@ const Tasks = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Task ID</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Reward</TableCell>
               <TableCell>Task Type</TableCell>
+              <TableCell>Link</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredTasks.map((task) => (
               <TableRow key={task._id}>
+                <TableCell>{task._id}</TableCell>
                 <TableCell>{task.description}</TableCell>
                 <TableCell>{task.reward}</TableCell>
                 <TableCell>{task.taskType ? "Auto" : "Manual"}</TableCell>
+                <TableCell>{task.link}</TableCell>
                 <TableCell>
                   <Button variant="contained" color="secondary" onClick={() => { setEditingTask(task); setShowModal(true); }}>
                     Edit
@@ -94,7 +98,7 @@ const Tasks = () => {
         onClose={() => { setShowModal(false); setEditingTask(null); }}
         onSubmit={editingTask ? handleEdit : handleAdd}
         initialData={editingTask}
-        fields={["description", "reward", "taskType"]}
+        fields={["description", "reward", "taskType", "link"]}
       />
     </div>
   );
