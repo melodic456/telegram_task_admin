@@ -61,6 +61,19 @@ const BonusUserSchema = new mongoose.Schema({
   bonus: Date,
 }, { collection: 'BonusUsers' });
 
+
+const WithdrawalSchema = new mongoose.Schema({
+  userID: { type: Number, required: true }, // User making the withdrawal
+  balance: { type: Number, required: true }, // Current balance of the user
+  toWithdraw: { type: Number, required: true }, // Amount the user wants to withdraw
+  createdAt: { type: Date, default: Date.now }, // Timestamp of when the withdrawal was requested
+  status: { 
+    type: String, 
+    enum: ["pending", "approved", "rejected"], 
+    default: "pending" // Withdrawal status (pending by default)
+  },
+}, { collection: 'withdrawals' });
+
 // Models
 const Admin = mongoose.model("Admin", AdminSchema);
 const TaskProof = mongoose.model("TaskProof", TaskProofSchema);
@@ -69,6 +82,7 @@ const PendingUser = mongoose.model("PendingUser", PendingUsersSchema);
 const Balance = mongoose.model("Balance", BalanceSchema);
 const Task = mongoose.model("Task", TaskSchema);
 const BonusUser = mongoose.model("BonusUser", BonusUserSchema);
+const Withdrawal = mongoose.model('Withdrawal', WithdrawalSchema);
 
 module.exports = {
   Admin,
@@ -78,4 +92,5 @@ module.exports = {
   Balance,
   Task,
   BonusUser,
+  Withdrawal
 };

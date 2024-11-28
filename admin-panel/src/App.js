@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import Users from "./components/Users";
 import Tasks from "./components/Tasks";
 import TaskSubmissions from "./components/TaskSubmissions";
+import Withdrawals from "./components/Withdrawals";
 
 function App() {
   return (
@@ -15,12 +16,14 @@ function App() {
             <Button color="inherit" component={Link} to="/users">Users</Button>
             <Button color="inherit" component={Link} to="/tasks">Tasks</Button>
             <Button color="inherit" component={Link} to="/task-submissions">Task Submissions</Button>
+            <Button color="inherit" component={Link} to="/withdrawals">Withdrawals</Button>
           </Toolbar>
         </AppBar>
         <Routes>
           <Route path="/users" element={<Users />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/task-submissions" element={<TaskSubmissions />} />
+          <Route path="/withdrawals" element={<Withdrawals />} />
         </Routes>
       </div>
     </Router>

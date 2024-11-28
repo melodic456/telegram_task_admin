@@ -1405,7 +1405,9 @@ bot.action("approve",async(ctx) => {
     } else {
         var newbal = parseFloat(ub) - parseFloat(toWith)
         db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { balance: newbal } }, { upsert: true })
-        db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:0.00 } }, { upsert: true })
+        db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:toWith } }, { upsert: true })
+        db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:toWith, balance: newbal } }, { upsert: true })
+        db.collection('withdrawals').insertOne({ userID: ctx.from.id, balance: newbal, toWithdraw: toWith,createdAt: new Date()  })
         db.collection('allUsers').updateOne({ stats: "stats" }, { $set: { value: parseFloat(toinc) } }, { upsert: true })
         ctx.deleteMessage()
         ctx.replyWithMarkdown(
