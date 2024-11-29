@@ -1023,7 +1023,7 @@ bot.on("contact", async(ctx)=> {
             }
             if (flag == channel.length) {
                 ctx.replyWithMarkdown(
-                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
                 let userdata = await db.collection('pendingUsers').find({ userID: ctx.from.id }).toArray()
                 let config = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
@@ -1075,7 +1075,7 @@ bot.hears('💰 Balance', async (ctx) => {
             }
             if (flag == channel.length) {
                 ctx.replyWithMarkdown(
-                    '*🙌🏻 User = ' + ctx.from.first_name + '\n\n💰 Balance = ' + ub.toFixed(3) + ' ' + currency + '\n\n🪢 Invite To Earn More*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🙌🏻 User = ' + ctx.from.first_name + '\n\n💰 Balance = ' + ub.toFixed(3) + ' ' + currency + '\n\n🪢 Invite To Earn More*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 mustjoin(ctx)
@@ -1110,7 +1110,7 @@ bot.hears('🙌🏻 Invite', async (ctx) => {
             }
             if (flag == channel.length) {
                 ctx.replyWithMarkdown(
-                    '*🙌🏻 User =* [' + ctx.from.first_name + '](tg://user?id=' + ctx.from.id + ')\n\n*🙌🏻 Your Invite Link = https://t.me/' + ctx.botInfo.username + '?start=' + ctx.from.id + ' \n\n🪢 Invite To ' + refer + ' ' + currency + ' Per Invite*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🙌🏻 User =* [' + ctx.from.first_name + '](tg://user?id=' + ctx.from.id + ')\n\n*🙌🏻 Your Invite Link = https://t.me/' + ctx.botInfo.username + '?start=' + ctx.from.id + ' \n\n🪢 Invite To ' + refer + ' ' + currency + ' Per Invite*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 mustjoin(ctx)
@@ -1144,7 +1144,7 @@ bot.hears('🟢 Joined', async (ctx) => {
             }
             if (flag == channel.length) {
                 ctx.replyWithMarkdown(
-                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
                 let userdata = await db.collection('pendingUsers').find({ userID: ctx.from.id }).toArray()
                 let config = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
@@ -1231,11 +1231,11 @@ bot.hears('💳 Withdraw', async (ctx) => {
                     let data = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
                     if (ub < mini_with) {
                         ctx.replyWithMarkdown(
-                            '*⚠️ Must Own AtLeast ' + mini_with + ' ' + currency + ' To Make Withdrawal*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                            '*⚠️ Must Own AtLeast ' + mini_with + ' ' + currency + ' To Make Withdrawal*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                         )
                     } else if (!data[0].wallet) {
                         ctx.replyWithMarkdown(
-                            '*⚠️ Set Your Wallet Using : *`🗂 Wallet`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                            '*⚠️ Set Your Wallet Using : *`🗂 Wallet`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                         )
                     } else {
                         await bot.telegram.sendMessage(ctx.from.id, "*📤 Enter Amount To Withdraw*", {
@@ -1276,7 +1276,7 @@ bot.hears('⛔ Cancel', async (ctx) => {
             }
             if (flag == channel.length) {
                 ctx.replyWithMarkdown(
-                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 mustjoin(ctx)
@@ -1313,13 +1313,13 @@ bot.hears('📊 Statistics', async (ctx) => {
                 if (statdata.length == 0) {
                     db.collection('allUsers').insertOne({ stats: "stats", value: 0 })
                     ctx.reply(
-                        '<b>📊 Bot Live Stats 📊\n\n📤 Total Payouts : 0 ' + currency + '\n\n💡 Total Users: ' + members.length + ' Users\n\n🔎 Coded By: <a href="tg://user?id=1003376875">ROHIT_154</a></b>' , { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '<b>📊 Bot Live Stats 📊\n\n📤 Total Payouts : 0 ' + currency + '\n\n💡 Total Users: ' + members.length + ' Users\n\n🔎 Coded By: <a href="tg://user?id=1003376875">ROHIT_154</a></b>' , { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                     )
                 } else {
                     let payout = statdata[0].value * 1
                     let memb = parseInt(members.length)
                     ctx.reply(
-                        '<b>📊 Bot Live Stats 📊\n\n📤 Total Payouts : ' + payout + ' ' + currency + '\n\n💡 Total Users: ' + memb + ' Users\n\n🔎 Coded By: <a href="tg://user?id=1003376875">ROHIT_154</a></b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '<b>📊 Bot Live Stats 📊\n\n📤 Total Payouts : ' + payout + ' ' + currency + '\n\n💡 Total Users: ' + memb + ' Users\n\n🔎 Coded By: <a href="tg://user?id=1003376875">ROHIT_154</a></b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                     )
                 }
             } else {
@@ -1531,14 +1531,14 @@ broadcast.hears(regex, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
             ctx.scene.leave('broadcast')
         } else {
             total = 0
             let users = await db.collection('allUsers').find({}).toArray()
             ctx.replyWithMarkdown(
-                '*📣 Broadcast Sent To: ' + users.length + ' Users*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*📣 Broadcast Sent To: ' + users.length + ' Users*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
             users.forEach((element, i) => {
                 if (total == 5) {
@@ -1572,11 +1572,11 @@ wallet.hears(regex, async (ctx) => {
             db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { wallet: ctx.message.text } }, { upsert: true })
             if (ctx.message.text == '⛔ Cancel') {
                 ctx.replyWithMarkdown(
-                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 ctx.replyWithMarkdown(
-                    '*🗂 Wallet Address Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🗂 Wallet Address Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
                 console.log(/^[a-zA-Z0-9]+$/.test("0xErts"))
             }
@@ -1618,27 +1618,27 @@ onWithdraw.on('text', async (ctx) => {
                 if (ctx.message.text == '⛔ Cancel'){
                   ctx.replyWithMarkdown(
 
-                        '*⛔ Withdrawal Cancelled*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '*⛔ Withdrawal Cancelled*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
 
                     )
                     ctx.scene.leave('onWithdraw')
                     return 0;
                 } else if (isNaN(ctx.message.text)){
                     ctx.replyWithMarkdown(
-                        '*⛔ Only Numeric Value Allowed*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '*⛔ Only Numeric Value Allowed*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                     )
                     ctx.scene.leave('onWithdraw')
                     return 0;
                 } else if (ctx.message.text > ub) {
                     ctx.replyWithMarkdown(
-                        '*⛔ Entered Amount Is Greater Than Your Balance*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '*⛔ Entered Amount Is Greater Than Your Balance*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                     )
                     ctx.scene.leave('onWithdraw')
                     return 0;
                 } else if (ctx.message.text < mini_with) {
                     ctx.replyWithMarkdown(
 
-                        '*⚠️ Minimum Withdrawal Is ' + mini_with + ' ' + currency + '*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '*⚠️ Minimum Withdrawal Is ' + mini_with + ' ' + currency + '*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
 
                     )
                     ctx.scene.leave('onWithdraw')
@@ -1646,7 +1646,7 @@ onWithdraw.on('text', async (ctx) => {
                 } else if (ctx.message.text > 10){
                   ctx.replyWithMarkdown(
 
-                        '*⚠️ Maximum Withdrawal Is 10 ' + currency + '*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        '*⚠️ Maximum Withdrawal Is 10 ' + currency + '*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
 
                     )
                     ctx.scene.leave('onWithdraw')
@@ -1699,7 +1699,7 @@ bot.action("approve",async(ctx) => {
         db.collection('allUsers').updateOne({ stats: "stats" }, { $set: { value: parseFloat(toinc) } }, { upsert: true })
         ctx.deleteMessage()
         ctx.replyWithMarkdown(
-                        "*✅ New Withdrawal Processed ✅\n\n🚀Amount : " + toWith + " " + currency + "\n⛔ Wallet :* `" + wallet + "`\n*💡 Bot: @" + ctx.botInfo.username + "*", {parse_mode:'markdown', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        "*✅ New Withdrawal Processed ✅\n\n🚀Amount : " + toWith + " " + currency + "\n⛔ Wallet :* `" + wallet + "`\n*💡 Bot: @" + ctx.botInfo.username + "*", {parse_mode:'markdown', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                     )
             bot.telegram.sendMessage(pay, "<b>✅ New Withdrawal Requested ✅\n\n🟢 User : <a href='tg://user?id=" + ctx.from.id + "'>" + ctx.from.id + "</a>\n\n🚀Amount : " + toWith + " " + currency + "\n⛔ Address :</b> <code>" + wallet + "</code>\n\n<b>💡 Bot: @" + ctx.botInfo.username + "</b>", { parse_mode: 'html' })
              let swg = admin[0].subwallet
@@ -1731,7 +1731,7 @@ bot.action("cancel",async(ctx)=> {
      ctx.deleteMessage()
      ctx.replyWithMarkdown(
 
-                        "*❌ Withdrawal Cancelled *", {parse_mode:'markdown', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                        "*❌ Withdrawal Cancelled *", {parse_mode:'markdown', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
 
                     )
      ctx.scene.leave('onWithdraw')
@@ -1746,13 +1746,13 @@ refer.hears(/^[+-]?([0-9]*[.])?[0-9]+/i, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             let final = ctx.message.text * 1
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { ref: final } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂New Refer Amount Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂New Refer Amount Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('refer')
@@ -1764,13 +1764,13 @@ mini.hears(/^[+-]?([0-9]*[.])?[0-9]+/i, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             let final = ctx.message.text * 1
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { minimum: final } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂New Minimum Withdraw Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂New Minimum Withdraw Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('mini')
@@ -1782,13 +1782,13 @@ bon.hears(/^[+-]?([0-9]*[.])?[0-9]+/i, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             let final = ctx.message.text * 1
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { bonus: final } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂New Daily Bonus Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂New Daily Bonus Set To: *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('bonus')
@@ -1800,7 +1800,7 @@ tgid.hears(/^[0-9]+$/, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             let user = parseInt(ctx.message.text)
@@ -1808,7 +1808,7 @@ tgid.hears(/^[0-9]+$/, async (ctx) => {
             let used = await db.collection('balance').find({ userID: user }).toArray()
             if (!data[0]) {
                 ctx.replyWithMarkdown(
-                    '*⛔ User Is Not Registered In Our db *', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '*⛔ User Is Not Registered In Our db *', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 let bal = used[0].balance
@@ -1820,7 +1820,7 @@ tgid.hears(/^[0-9]+$/, async (ctx) => {
                     invite = data[0].inviter
                 }
                 ctx.reply(
-                    '<b>🫂 User : <a href="tg://user?id=' + ctx.message.text + '">' + ctx.message.text + '</a>\n⛔ User Id</b> : <code>' + ctx.message.text + '</code>\n\n<b>💰 Balance : ' + bal + '\n🗂 Wallet : </b><code>' + add + '</code>\n<b>🙌🏻 Inviter : </b><code>' + invite + '</code>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '<b>🫂 User : <a href="tg://user?id=' + ctx.message.text + '">' + ctx.message.text + '</a>\n⛔ User Id</b> : <code>' + ctx.message.text + '</code>\n\n<b>💰 Balance : ' + bal + '\n🗂 Wallet : </b><code>' + add + '</code>\n<b>🙌🏻 Inviter : </b><code>' + invite + '</code>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             }
         }
@@ -1833,12 +1833,12 @@ subwallet.hears(regex, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { subwallet: ctx.message.text } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂 Subwallet Guid Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂 Subwallet Guid Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('subwallet')
@@ -1850,12 +1850,12 @@ mkey.hears(regex, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { mkey: ctx.message.text } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂 Merchant Key Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂 Merchant Key Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('mkey')
@@ -1867,12 +1867,12 @@ mid.hears(regex, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { mid: ctx.message.text } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂 Merchant Id Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂 Merchant Id Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('mid')
@@ -1884,12 +1884,12 @@ comment.hears(regex, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { comment: ctx.message.text } }, { upsert: true })
             ctx.replyWithMarkdown(
-                '*🗂 Payment Description Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🗂 Payment Description Set To : *\n`' + ctx.message.text + '`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('comments')
@@ -1901,7 +1901,7 @@ incr.hears(regex, async (ctx) => {
     try {
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             let message = ctx.message.text
@@ -1913,7 +1913,7 @@ incr.hears(regex, async (ctx) => {
             let final = bal + amount
             db.collection('balance').updateOne({ userID: parseInt(user) }, { $set: { balance: final } }, { upsert: true })
             ctx.reply(
-                '<b>💰 Balance Of <a href="tg://user?id=' + user + '">' + user + '</a> Was Increased By ' + amount + '\n\n💰 Final Balance = ' + final + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '<b>💰 Balance Of <a href="tg://user?id=' + user + '">' + user + '</a> Was Increased By ' + amount + '\n\n💰 Final Balance = ' + final + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
             bot.telegram.sendMessage(user, "*💰 Admin Gave You A Increase In Balance By " + amount + "*", { parse_mode: 'markdown' })
         }
@@ -1927,18 +1927,18 @@ chnl.hears(regex, async (ctx) => {
         let admin = await db.collection('admindb').find({ admin: "admin" }).toArray()
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else if (ctx.message.text[0] == "@") {
             let channel = admin[0].channels
             channel.push(ctx.message.text)
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { channels: channel } }, { upsert: true })
             ctx.reply(
-                '<b>🗂 Channel Added To Bot : ' + ctx.message.text + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '<b>🗂 Channel Added To Bot : ' + ctx.message.text + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             ctx.replyWithMarkdown(
-                '*⛔ Channel User Name Must Start With "@"*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*⛔ Channel User Name Must Start With "@"*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('chnl')
@@ -1952,23 +1952,23 @@ removechnl.hears(regex, async (ctx) => {
         var chan = admin[0].channels
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else if (ctx.message.text[0] == "@") {
             if (contains("" + ctx.message.text + "", chan)) {
                 var result = arrayRemove(chan, "" + ctx.message.text + "");
                 db.collection('admindb').updateOne({ admin: "admin" }, { $set: { channels: result } }, { upsert: true })
                 ctx.reply(
-                    '<b>🗂 Channel Removed From Bot : ' + ctx.message.text + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '<b>🗂 Channel Removed From Bot : ' + ctx.message.text + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 ctx.reply(
-                    '<b>⛔ Channel Not In Our db</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                    '<b>⛔ Channel Not In Our db</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             }
         } else {
             ctx.replyWithMarkdown(
-                '*⛔ Channel User Name Must Start With "@"*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*⛔ Channel User Name Must Start With "@"*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('removechnl')
@@ -1981,16 +1981,16 @@ paychnl.hears(regex, async (ctx) => {
         let admin = await db.collection('admindb').find({ admin: "admin" }).toArray()
         if (ctx.message.text == '⛔ Cancel') {
             ctx.replyWithMarkdown(
-                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*🏡 Welcome To Main Menu*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else if (ctx.message.text[0] == "@") {
             db.collection('admindb').updateOne({ admin: "admin" }, { $set: { paychannel: "" + ctx.message.text + "" } }, { upsert: true })
             ctx.reply(
-                '<b>🗂 Pay Channel Set To : ' + ctx.message.text + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '<b>🗂 Pay Channel Set To : ' + ctx.message.text + '</b>', { parse_mode: 'html', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         } else {
             ctx.replyWithMarkdown(
-                '*⛔ Channel User Name Must Start With "@"*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite', '🎁 Bonus', '🗂 Wallet'], ['💳 Withdraw', '📊 Statistics', '📝 View Tasks']], resize_keyboard: true } }
+                '*⛔ Channel User Name Must Start With "@"*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
             )
         }
         ctx.scene.leave('paychnl')

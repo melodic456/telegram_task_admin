@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from "@mui/material";
 import FormModal from "./FormModal";
 
 const Tasks = () => {
@@ -9,24 +9,26 @@ const Tasks = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const tasksPerPage = 5; // Change this value to set how many tasks you want per page
+
+  // Pagination states
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Number of tasks per page
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
   useEffect(() => {
-    setFilteredTasks(
-      tasks.filter((task) =>
-        Object.values(task)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())
-      )
+    // Filter tasks based on search query
+    const filtered = tasks.filter((task) =>
+      Object.values(task)
+        .join(" ") // Join all values of the task object into a single string
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
     );
+
+    setFilteredTasks(filtered);
+    setPage(0); // Reset to the first page when the filtered tasks change
   }, [searchQuery, tasks]);
 
   const fetchTasks = async () => {
@@ -49,15 +51,17 @@ const Tasks = () => {
     fetchTasks();
   };
 
-  // Pagination logic
-  const indexOfLastTask = currentPage * tasksPerPage;
-  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
-  const currentTasks = filteredTasks.slice(indexOfFirstTask, indexOfLastTask);
-  const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to the first page
+  };
+
+  // Calculate the current tasks to display based on pagination
+  const currentTasks = filteredTasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div>
@@ -106,38 +110,25 @@ const Tasks = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <FormModal
-        show={showModal}
-        onClose={() => { setShowModal(false); setEditingTask(null); }}
-        onSubmit={editingTask ? handleEdit : handleAdd}
-        initialData={editingTask }
-            />
-            <div>
-                {/* Pagination Controls */}
-                <Button 
-                    disabled={currentPage === 1} 
-                    onClick={() => handlePageChange(currentPage - 1)}
-                >
-                    Previous
-                </Button>
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <Button 
-                        key={index + 1} 
-                        onClick={() => handlePageChange(index + 1)} 
-                        variant={currentPage === index + 1 ? "contained" : "outlined"}
-                    >
-                        {index + 1}
-                    </Button>
-                ))}
-                <Button 
-                    disabled={currentPage === totalPages} 
-                    onClick={() => handlePageChange(currentPage + 1)}
-                >
-                    Next
-                </Button>
-            </div>
-        </div>
-    );
+      <TablePagination
+        rowsPerPageOptions={[5, 10 , 25]}
+        component="div"
+        count={filteredTasks.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      {showModal && (
+        <FormModal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          onSubmit={editingTask ? handleEdit : handleAdd}
+          task={editingTask}
+        />
+      )}
+    </div>
+  );
 };
 
 export default Tasks;

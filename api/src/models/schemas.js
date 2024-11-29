@@ -34,6 +34,7 @@ const AllUsersSchema = new mongoose.Schema({
   wallet: String,
   stats: String, // Optional field for statistics
   value: Number, // Optional field for statistics
+  iniviter: Number,
 }, { collection: 'allUsers' });
 
 // Pending Users Schema for 'pendingUsers'

@@ -1,46 +1,55 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
+import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from "@mui/material";
 
 const Withdrawals = () => {
   const [withdrawals, setWithdrawals] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
-  const [filteredWithdrawals, setFilteredWithdrawals] = useState([]); // State for filtered withdrawals
+  const [filteredWithdrawals, setFilteredWithdrawals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     fetchWithdrawals();
   }, []);
 
   useEffect(() => {
-    // Filter withdrawals based on the search term
-    if (searchTerm) {
-      const filtered = withdrawals.filter((withdrawal) =>
-        Object.values(withdrawal)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
-      );
-      setFilteredWithdrawals(filtered);
-    } else {
-      setFilteredWithdrawals(withdrawals); // If search term is empty, show all withdrawals
-    }
+    const filtered = withdrawals.filter((withdrawal) =>
+      Object.values(withdrawal)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+    setFilteredWithdrawals(filtered);
+    setPage(0); // Reset to the first page when the filtered withdrawals change
   }, [searchTerm, withdrawals]);
 
   const fetchWithdrawals = async () => {
-    const response = await axios.get("http://195.7.6.213:3001/withdrawals"); // Adjust API URL as needed
+    const response = await axios.get("http://195.7.6.213:3001/withdrawals");
     setWithdrawals(response.data);
-    setFilteredWithdrawals(response.data); // Initialize filtered withdrawals with the fetched data
+    setFilteredWithdrawals(response.data);
   };
 
   const handleApprove = async (id) => {
     await axios.put(`http://195.7.6.213:3001/withdrawals/${id}`, { status: "approved" });
-    fetchWithdrawals(); // Reload the data after approval
+    fetchWithdrawals();
   };
 
   const handleReject = async (id) => {
     await axios.put(`http://195.7.6.213:3001/withdrawals/${id}`, { status: "rejected" });
-    fetchWithdrawals(); // Reload the data after rejection
+    fetchWithdrawals();
   };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to the first page
+  };
+
+  const currentWithdrawals = filteredWithdrawals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div>
@@ -55,7 +64,7 @@ const Withdrawals = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         margin="normal"
       />
-
+      
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -68,7 +77,7 @@ const Withdrawals = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredWithdrawals.map((withdrawal) => (
+            {currentWithdrawals.map((withdrawal) => (
               <TableRow key={withdrawal._id}>
                 <TableCell>{withdrawal.userID}</TableCell>
                 <TableCell>{withdrawal.balance}</TableCell>
@@ -97,6 +106,17 @@ const Withdrawals = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      
+      {/* Pagination Controls */}
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={filteredWithdrawals.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
 };
