@@ -86,6 +86,7 @@ const Tasks = () => {
               <TableCell>Reward</TableCell>
               <TableCell>Task Type</TableCell>
               <TableCell>Link</TableCell>
+              <TableCell>Priority</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -97,6 +98,7 @@ const Tasks = () => {
                 <TableCell>{task.reward}</TableCell>
                 <TableCell>{task.taskType ? "Auto" : "Manual"}</TableCell>
                 <TableCell>{task.link}</TableCell>
+                <TableCell>{task.priority}</TableCell>
                 <TableCell>
                   <Button variant="contained" color="secondary" onClick={() => { setEditingTask(task); setShowModal(true); }}>
                     Edit
@@ -132,7 +134,7 @@ const Tasks = () => {
         onClose={() => { setShowModal(false); setEditingTask(null); }}
         onSubmit={editingTask ? handleEdit : handleAdd}
         initialData={editingTask}
-        fields={["description", "reward", "taskType", "link"]}
+        fields={["description", "reward", "taskType", "link", "priority"]}
       />
     </div>
   );

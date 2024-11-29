@@ -515,7 +515,8 @@ async function checkUserInGroup(chatId, userId) {
 bot.hears('📝 View Tasks', async (ctx) => {
     try {
         // Fetch all available tasks from the db
-        const tasks = await db.collection('tasks').find().toArray();
+        // const tasks = await db.collection('tasks').find().toArray();
+        const tasks = await db.collection('tasks').find().sort({ priority: 1 }).toArray();
 
         // If no tasks are available
         if (tasks.length === 0) {

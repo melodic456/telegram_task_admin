@@ -55,6 +55,7 @@ const TaskSchema = new mongoose.Schema({
   link: String,
   reward: Number,
   taskType: Boolean,
+  priority: Number,
 }, { collection: 'tasks' });
 
 // Bonus Users Schema for 'BonusUsers'
