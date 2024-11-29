@@ -9,6 +9,10 @@ const Tasks = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const tasksPerPage = 5; // Change this value to set how many tasks you want per page
 
   useEffect(() => {
     fetchTasks();
@@ -17,9 +21,8 @@ const Tasks = () => {
   useEffect(() => {
     setFilteredTasks(
       tasks.filter((task) =>
-        // task.description.toLowerCase().includes(searchQuery.toLowerCase())
-      Object.values(task)
-          .join(" ") // Join all values of the user object into a single string
+        Object.values(task)
+          .join(" ")
           .toLowerCase()
           .includes(searchQuery.toLowerCase())
       )
@@ -44,6 +47,16 @@ const Tasks = () => {
   const handleDelete = async (id) => {
     await axios.delete(`http://195.7.6.213:3001/tasks/${id}`);
     fetchTasks();
+  };
+
+  // Pagination logic
+  const indexOfLastTask = currentPage * tasksPerPage;
+  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+  const currentTasks = filteredTasks.slice(indexOfFirstTask, indexOfLastTask);
+  const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -73,7 +86,7 @@ const Tasks = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredTasks.map((task) => (
+            {currentTasks.map((task) => (
               <TableRow key={task._id}>
                 <TableCell>{task._id}</TableCell>
                 <TableCell>{task.description}</TableCell>
@@ -97,11 +110,34 @@ const Tasks = () => {
         show={showModal}
         onClose={() => { setShowModal(false); setEditingTask(null); }}
         onSubmit={editingTask ? handleEdit : handleAdd}
-        initialData={editingTask}
-        fields={["description", "reward", "taskType", "link"]}
-      />
-    </div>
-  );
+        initialData={editingTask }
+            />
+            <div>
+                {/* Pagination Controls */}
+                <Button 
+                    disabled={currentPage === 1} 
+                    onClick={() => handlePageChange(currentPage - 1)}
+                >
+                    Previous
+                </Button>
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <Button 
+                        key={index + 1} 
+                        onClick={() => handlePageChange(index + 1)} 
+                        variant={currentPage === index + 1 ? "contained" : "outlined"}
+                    >
+                        {index + 1}
+                    </Button>
+                ))}
+                <Button 
+                    disabled={currentPage === totalPages} 
+                    onClick={() => handlePageChange(currentPage + 1)}
+                >
+                    Next
+                </Button>
+            </div>
+        </div>
+    );
 };
 
 export default Tasks;

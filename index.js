@@ -634,22 +634,41 @@ bot.hears('📝 View Tasks', async (ctx) => {
 
         console.log(buttonAction, buttonText)
             // console.log(JSON.stringify(reply_markup, null, 2));
-
-
+        const inlineKeyboard = [
+            [
+                { text: buttonText, ...buttonAction }, // Dynamically add url or callback_data
+            ],
+        ];
+        
+        // Add the "Check if Joined" button only if task.taskType is true
+        if (task.taskType) {
+            inlineKeyboard[0].push({ text: 'Check if Joined', callback_data: `checkJoin:${username}:${task._id}` });
+        }
+        
         // Send the task to the user
         ctx.reply(
             `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
             {
                 reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: buttonText, ...buttonAction }, // Dynamically add url or callback_data
-                            { text: 'Check if Joined', callback_data: `checkJoin:${username}:${task._id}` }
-                        ],
-                    ],
+                    inline_keyboard: inlineKeyboard,
                 },
             }
         );
+
+        // Send the task to the user
+        // ctx.reply(
+        //     `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
+        //     {
+        //         reply_markup: {
+        //             inline_keyboard: [
+        //                 [
+        //                     { text: buttonText, ...buttonAction }, // Dynamically add url or callback_data
+        //                     { text: 'Check if Joined', callback_data: `checkJoin:${username}:${task._id}` }
+        //                 ],
+        //             ],
+        //         },
+        //     }
+        // );
     });
         } catch (error) {
         console.log(error);
@@ -1014,7 +1033,8 @@ bot.on("contact", async(ctx)=> {
                     let ref = refer * 1
                     let final = ref + cur
                     bot.telegram.sendMessage(userdata[0].inviter, "*💰" + refer + " " + currency + " Added To Your Balance*", { parse_mode: 'markdown' })
-                    bot.telegram.sendMessage(ctx.from.id, "*?? To Check Who Invited You, Click On '✅ Check'*", { parse_mode: 'markdown', reply_markup: { inline_keyboard: [[{ text: "✅ Check", callback_data: "check" }]] } })
+                    // bot.telegram.sendMessage(ctx.from.id, "*?? To Check Who Invited You, Click On '✅ Check'*", { parse_mode: 'markdown', reply_markup: { inline_keyboard: [[{ text: "✅ Check", callback_data: "check" }]] } })
+                    bot.telegram.sendMessage(ctx.from.id, "<b>🚧 You are invited by: <a href='tg://user?id=" + userdata[0].inviter + "'>" + userdata[0].inviter + "</a></b>")
                     db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { inviter: userdata[0].inviter, referred: 'DONE' } }, { upsert: true })
                     db.collection('balance').updateOne({ userID: userdata[0].inviter }, { $set: { balance: final } }, { upsert: true })
                 }
