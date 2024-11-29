@@ -119,14 +119,21 @@ const Tasks = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {showModal && (
+      {/* {showModal && (
         <FormModal
           open={showModal}
           onClose={() => setShowModal(false)}
           onSubmit={editingTask ? handleEdit : handleAdd}
           task={editingTask}
         />
-      )}
+      )} */}
+       <FormModal
+        show={showModal}
+        onClose={() => { setShowModal(false); setEditingTask(null); }}
+        onSubmit={editingTask ? handleEdit : handleAdd}
+        initialData={editingTask}
+        fields={["description", "reward", "taskType", "link"]}
+      />
     </div>
   );
 };

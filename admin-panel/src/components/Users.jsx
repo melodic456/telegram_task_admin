@@ -124,14 +124,13 @@ const Users = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {showModal && (
-        <FormModal
-          user={editingUser }
-          onClose={() => { setShowModal(false); setEditingUser (null); }}
-          onAdd={handleAdd}
-          onEdit={handleEdit}
-        />
-      )}
+      <FormModal
+        show={showModal}
+        onClose={() => { setShowModal(false); setEditingUser(null); }}
+        onSubmit={editingUser ? handleEdit : handleAdd}
+        initialData={editingUser}
+        fields={["userID", "balance", "toWithdraw", "wallet", "stats", "value", "inviter"]}
+      />
     </div>
   );
 };
