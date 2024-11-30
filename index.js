@@ -526,7 +526,7 @@ bot.hears('📝 View Tasks', async (ctx) => {
 
         console.log(tasks)
     var tasks_checker = []
-    tasks.forEach(async (task) => {
+    tasks.forEach(async (task, index) => {
         const userId = ctx.from.id; // Get the user ID from the context
         const channelLink = task.link; // The channel link from the task
         // const link = 't.me/habijabi34';
@@ -537,6 +537,12 @@ bot.hears('📝 View Tasks', async (ctx) => {
 
         // If the user is already a member, skip showing the task
             if (isUserMember) {
+                if (index === tasks.length - 1) {
+                    console.log(`This is the last element:`);
+                    if (tasks_checker.length === 0) {
+                    ctx.reply('No tasks available at the moment.');
+                    }
+                }
                 return; // Skip this task for the user
             }
         } else {
@@ -553,6 +559,12 @@ bot.hears('📝 View Tasks', async (ctx) => {
         if (existingProof) {
             // If the user has already completed the task, inform them
             // await ctx.answerCbQuery('You have already completed this task!');
+            if (index === tasks.length - 1) {
+                console.log(`This is the last element:`);
+                if (tasks_checker.length === 0) {
+                ctx.reply('No tasks available at the moment.');
+                }
+            }
             return;
         }
 
@@ -585,16 +597,24 @@ bot.hears('📝 View Tasks', async (ctx) => {
                 },
             }
         );
+
         tasks_checker.push(task)
+        if (index === tasks.length - 1) {
+            console.log(`This is the last element:`);
+            if (tasks_checker.length === 0) {
+            ctx.reply('No tasks available at the moment.');
+            }
+        }
+        // console.log("this is " + tasks_checker.length)
     });
         } catch (error) {
         console.log(error);
         ctx.reply('Error fetching tasks.');
     }
-
-    if (tasks_checker.length === 0) {
-        return ctx.reply('No tasks available at the moment.');
-    }
+    // console.log("this is hhh " + tasks_checker.length)
+    // if (tasks_checker.length === 0) {
+    //      ctx.reply('No tasks available at the moment.');
+    // }
 });
 
 
