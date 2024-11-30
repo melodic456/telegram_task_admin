@@ -12,7 +12,8 @@ const rateLimit = require('telegraf-ratelimit')
 const {WizardScene} = require("telegraf/scenes");
 // const telegram = require("telegraf/src/telegram");
 // var bot_token = '6100354506:AAESTtpgg1-OwF8VYNiMbUwcHXHCQEh-lOs'; //YOUR BOT TOKEN HERE
-var bot_token = '8065612727:AAHB0jI0vUF0fUaF2GiQLkyJfQFL3jG6TB4'; //YOUR BOT TOKEN HERE
+// var bot_token = '8065612727:AAHB0jI0vUF0fUaF2GiQLkyJfQFL3jG6TB4'; //YOUR BOT TOKEN HERE
+var bot_token = '7640298951:AAF6Zt_K9knvxRUI7mYRC-A2-fvvBdW5dRs'; //YOUR BOT TOKEN HERE
 const bot = new Telegraf(bot_token);
 let db;
 const balance = new BaseScene('balance')
@@ -899,7 +900,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    db = await client.db('mytesting');
+    db = await client.db('mytesting2');
     bot.telegram.deleteWebhook().then(success => {
         success && console.log('🤖 Bot Has Been SuccessFully Registered')
         bot.launch();
@@ -925,11 +926,11 @@ run().catch(console.dir);
 //         bot.launch();
 //     })
 // })
-
+// 8067054756
 
 // send message directly in the bot to a user
 // Telegraf.telegram.sendMessage(chatId, text)
-bot.telegram.sendMessage(7374728124, "hello there!!")
+bot.telegram.sendMessage(8067054756, "hello there!!")
 //  get user sent message text
 bot.on('email', async ctx => {
   // if(isWaitingForUser) {
@@ -1367,7 +1368,7 @@ bot.hears('/adminhelp', async (ctx) => {
         } else {
             var with_stat = '🚫 Off'
         }
-        if (ctx.from.id == 7374728124) {
+        if (ctx.from.id == 8067054756) {
             bot.telegram.sendMessage(ctx.from.id,
                 "<b>🏡 Hey " + ctx.from.first_name + "\n🤘🏻 Welcome To Admin Panel\n\n💡 Bot Current Stats: \n\t\t\t\t📛 Bot : @" + ctx.botInfo.username + "\n\t\t\t\t🤖 Bot Status: " + botstt + "\n\t\t\t\t📤 Withdrawals : " + with_stat + "\n\t\t\t\t🌲 Channels: " + final + "💰 Refer: " + refer + "\n\t\t\t\t💰 Minimum: " + mini_with + "\n\t\t\t\t💲 Currency: " + currency + "\n\t\t\t\t🎁 Bonus: " + bonusamount + "\n\t\t\t\t📤 Pay Channel: " + paychannel + "\n\t\t\t\t✏️ Paytm Keys :</b> <code>" + keys + "</code> "
                 , { parse_mode: 'html', reply_markup: { inline_keyboard: [[{ text: "💰 Change Refer", callback_data: "refer" }, { text: "💰 Change Minimum", callback_data: "minimum" }], [{ text: "🤖 Bot : " + botstt + "", callback_data: "botstat" }], [{ text: "🌲 Change Channels", callback_data: "channels" }, { text: "🎁 Change Bonus", callback_data: "bonus" }], [{ text: "📤 Withdrawals : " + with_stat + "", callback_data: "withstat" }], [{ text: "🚹 User Details", callback_data: "userdetails" }, { text: "🔄 Change Balance", callback_data: "changebal" }], [{ text: "✏️ Paytm Keys : " + keys + "", callback_data: "keys" }], [{ text: "Create Task", callback_data: "createTask" }], [{ text: 'View and Manage Tasks', callback_data: 'taskList' }], [{ text: 'Review Submitted Tasks', callback_data: 'reviewSubmittedTasks' }]] } })
