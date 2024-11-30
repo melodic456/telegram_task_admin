@@ -524,79 +524,8 @@ bot.hears('📝 View Tasks', async (ctx) => {
             return ctx.reply('No tasks available at the moment.');
         }
 
-        // Display tasks for selection
-        // tasks.forEach(task => {
-        //     ctx.reply(
-        //         `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
-        //         {
-        //             reply_markup: {
-        //                 inline_keyboard: [
-        //                     [
-        //                         { text: 'Complete Task', callback_data: `completeTask:${task._id}` }
-        //                     ],
-        //                 ],
-        //             },
-        //         }
-        //     );
-        // });
-//         tasks.forEach(async task => {
-//             // const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
-//             // const buttonAction = task.taskType ? task.link : `completeTask:${task._id}`;
-        
-//             const userId = ctx.from.id; // Get the user ID from the context
-//             console.log(userId)
-//             const channelLink = task.link; // The channel link from the task
-            
-//             // Check if the user is a member of the channel
-//             const isUserMember = await checkUserInGroup(userId, channelLink);
-//             if (isUserMember) {
-//                 return; // Skip this task for the user
-//             }
-//             // const buttonText = task.taskType ? (isUserMember ? 'Go to Link' : 'Join the Channel') : 'Complete Task';
-//             // const buttonAction = task.taskType
-//             //     ? (isUserMember ? task.link : 'Please Join the Channel') 
-//             //     : `completeTask:${task._id}`;
-//             // const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
-//             // const buttonAction = task.taskType ? task.link : `completeTask:${task._id}`;
-//             // ctx.reply(
-//             //     `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
-//             //     {
-//             //         reply_markup: {
-//             //             inline_keyboard: [
-//             //                 [
-//             //                     { text: buttonText, callback_data: buttonAction }
-//             //                 ],
-//             //             ],
-//             //         },
-//             //     }
-//             // );
-//             const buttonText = task.taskType ? 'Go to Link' : 'Complete Task';
-//             const buttonAction = task.taskType 
-//                 ? { url: task.link } // If taskType is true, use the URL as the action
-//                 : { callback_data: `completeTask:${task._id}` }; // If taskType is false, use callback data
-        
-//             // Send the task to the user
-//             ctx.reply(
-//                 `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
-//                 {
-//                     reply_markup: {
-//                         inline_keyboard: [
-//                             [
-//                                 { text: buttonText, ...buttonAction } // Dynamically add url or callback_data
-//                             ],
-//                         ],
-//                     },
-//                 }
-//             );
-//         });
-        
-//     } catch (error) {
-//         console.log(error);
-//         ctx.reply('Error fetching tasks.');
-//     }
-// });
-
-
+        console.log(tasks)
+    var tasks_checker = []
     tasks.forEach(async (task) => {
         const userId = ctx.from.id; // Get the user ID from the context
         const channelLink = task.link; // The channel link from the task
@@ -649,32 +578,22 @@ bot.hears('📝 View Tasks', async (ctx) => {
         
         // Send the task to the user
         ctx.reply(
-            `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
+            `Description: ${task.description}\nReward: ${task.reward}`,
             {
                 reply_markup: {
                     inline_keyboard: inlineKeyboard,
                 },
             }
         );
-
-        // Send the task to the user
-        // ctx.reply(
-        //     `Task ID: ${task._id}\nDescription: ${task.description}\nReward: ${task.reward}`,
-        //     {
-        //         reply_markup: {
-        //             inline_keyboard: [
-        //                 [
-        //                     { text: buttonText, ...buttonAction }, // Dynamically add url or callback_data
-        //                     { text: 'Check if Joined', callback_data: `checkJoin:${username}:${task._id}` }
-        //                 ],
-        //             ],
-        //         },
-        //     }
-        // );
+        tasks_checker.push(task)
     });
         } catch (error) {
         console.log(error);
         ctx.reply('Error fetching tasks.');
+    }
+
+    if (tasks_checker.length === 0) {
+        return ctx.reply('No tasks available at the moment.');
     }
 });
 
@@ -787,7 +706,7 @@ bot.on('callback_query', async (ctx) => {
             await ctx.editMessageReplyMarkup({
                 inline_keyboard: [
                     [
-                        { text: 'Go to Link', url: `https://t.me/${username}` }, // Update with the link button (if needed)
+                        { text: `Your task is approved! You earned ${reward}`, url: `https://t.me/${username}` }, // Update with the link button (if needed)
                         // Optionally remove or replace the "Check if Joined" button here
                     ]
                 ]
@@ -1036,7 +955,7 @@ bot.on("contact", async(ctx)=> {
                     let final = ref + cur
                     bot.telegram.sendMessage(userdata[0].inviter, "*💰" + refer + " " + currency + " Added To Your Balance*", { parse_mode: 'markdown' })
                     // bot.telegram.sendMessage(ctx.from.id, "*?? To Check Who Invited You, Click On '✅ Check'*", { parse_mode: 'markdown', reply_markup: { inline_keyboard: [[{ text: "✅ Check", callback_data: "check" }]] } })
-                    bot.telegram.sendMessage(ctx.from.id, "<b>🚧 You are invited by: <a href='tg://user?id=" + userdata[0].inviter + "'>" + userdata[0].inviter + "</a></b>")
+                    bot.telegram.sendMessage(ctx.from.id, "<b>🚧 You are invited by: <a href='tg://user?id=" + userdata[0].inviter + "'>" + userdata[0].inviter + "</a></b>", { parse_mode: 'html' })
                     db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { inviter: userdata[0].inviter, referred: 'DONE' } }, { upsert: true })
                     db.collection('balance').updateOne({ userID: userdata[0].inviter }, { $set: { balance: final } }, { upsert: true })
                 }
