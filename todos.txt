@@ -12,4 +12,6 @@ Auto --- add field link where to auto check for submission
 5. pagination
 
 
-User new field inviter 
+User new field  total invites inviter
+wallet setup
+ 

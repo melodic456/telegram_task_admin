@@ -869,7 +869,7 @@ run().catch(console.dir);
 
 // send message directly in the bot to a user
 // Telegraf.telegram.sendMessage(chatId, text)
-bot.telegram.sendMessage(8067054756, "hello there!!")
+bot.telegram.sendMessage(7374728124, "hello there!!")
 //  get user sent message text
 bot.on('email', async ctx => {
   // if(isWaitingForUser) {
@@ -973,10 +973,13 @@ bot.on("contact", async(ctx)=> {
                     let cur = bal[0].balance * 1
                     let ref = refer * 1
                     let final = ref + cur
+                    // let config_inviter = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
+                    
                     bot.telegram.sendMessage(userdata[0].inviter, "*💰" + refer + " " + currency + " Added To Your Balance*", { parse_mode: 'markdown' })
                     // bot.telegram.sendMessage(ctx.from.id, "*?? To Check Who Invited You, Click On '✅ Check'*", { parse_mode: 'markdown', reply_markup: { inline_keyboard: [[{ text: "✅ Check", callback_data: "check" }]] } })
                     bot.telegram.sendMessage(ctx.from.id, "<b>🚧 You are invited by: <a href='tg://user?id=" + userdata[0].inviter + "'>" + userdata[0].inviter + "</a></b>", { parse_mode: 'html' })
                     db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { inviter: userdata[0].inviter, referred: 'DONE' } }, { upsert: true })
+                    db.collection('allUsers').updateOne({ userID: userdata[0].inviter },{ $inc: { total_invites: 1 }})
                     db.collection('balance').updateOne({ userID: userdata[0].inviter }, { $set: { balance: final } }, { upsert: true })
                 }
             } else {
@@ -1050,8 +1053,12 @@ bot.hears('🙌🏻 Invite', async (ctx) => {
                 }
             }
             if (flag == channel.length) {
+                let userdata = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray() 
+
+                // userdata[0].total_invites ? userdata[0].total_invites: 0
+                let totalInvites = userdata[0]?.total_invites ?? 0;
                 ctx.replyWithMarkdown(
-                    '*🙌🏻 User =* [' + ctx.from.first_name + '](tg://user?id=' + ctx.from.id + ')\n\n*🙌🏻 Your Invite Link = https://t.me/' + ctx.botInfo.username + '?start=' + ctx.from.id + ' \n\n🪢 Invite To ' + refer + ' ' + currency + ' Per Invite*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
+                    '*🙌🏻 User =* [' + ctx.from.first_name + '](tg://user?id=' + ctx.from.id + ')\n\n*🙌🏻 Your Invite Link = https://t.me/' + ctx.botInfo.username + '?start=' + ctx.from.id + '\n\nYour total invites ' + totalInvites  + ' \n\n🪢 Invite To ' + refer + ' ' + currency + ' Per Invite*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                 )
             } else {
                 mustjoin(ctx)
@@ -1307,7 +1314,7 @@ bot.hears('/adminhelp', async (ctx) => {
         } else {
             var with_stat = '🚫 Off'
         }
-        if (ctx.from.id == 8067054756) {
+        if (ctx.from.id == 7374728124) {
             bot.telegram.sendMessage(ctx.from.id,
                 "<b>🏡 Hey " + ctx.from.first_name + "\n🤘🏻 Welcome To Admin Panel\n\n💡 Bot Current Stats: \n\t\t\t\t📛 Bot : @" + ctx.botInfo.username + "\n\t\t\t\t🤖 Bot Status: " + botstt + "\n\t\t\t\t📤 Withdrawals : " + with_stat + "\n\t\t\t\t🌲 Channels: " + final + "💰 Refer: " + refer + "\n\t\t\t\t💰 Minimum: " + mini_with + "\n\t\t\t\t💲 Currency: " + currency + "\n\t\t\t\t🎁 Bonus: " + bonusamount + "\n\t\t\t\t📤 Pay Channel: " + paychannel + "\n\t\t\t\t✏️ Paytm Keys :</b> <code>" + keys + "</code> "
                 , { parse_mode: 'html', reply_markup: { inline_keyboard: [[{ text: "💰 Change Refer", callback_data: "refer" }, { text: "💰 Change Minimum", callback_data: "minimum" }], [{ text: "🤖 Bot : " + botstt + "", callback_data: "botstat" }], [{ text: "🌲 Change Channels", callback_data: "channels" }, { text: "🎁 Change Bonus", callback_data: "bonus" }], [{ text: "📤 Withdrawals : " + with_stat + "", callback_data: "withstat" }], [{ text: "🚹 User Details", callback_data: "userdetails" }, { text: "🔄 Change Balance", callback_data: "changebal" }], [{ text: "✏️ Paytm Keys : " + keys + "", callback_data: "keys" }], [{ text: "Create Task", callback_data: "createTask" }], [{ text: 'View and Manage Tasks', callback_data: 'taskList' }], [{ text: 'Review Submitted Tasks', callback_data: 'reviewSubmittedTasks' }]] } })
@@ -1461,7 +1468,7 @@ bot.hears('🎁 Bonus', async (ctx) => {
     }
 })
 bot.hears('/broadcast', async (ctx) => {
-    if (ctx.from.id == 1003376875) {
+    if (ctx.from.id == 7374728124) {
         ctx.replyWithMarkdown(
             '*📨 Enter Message To Broadcast*', { reply_markup: { keyboard: [['⛔ Cancel']], resize_keyboard: true } }
         )

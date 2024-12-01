@@ -89,6 +89,7 @@ const Users = () => {
               <TableCell>Stats</TableCell>
               <TableCell>Value</TableCell>
               <TableCell>Inviter</TableCell>
+              <TableCell>Total Invites</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -102,6 +103,7 @@ const Users = () => {
                 <TableCell>{user.stats}</TableCell>
                 <TableCell>{user.value}</TableCell>
                 <TableCell>{user.inviter}</TableCell>
+                <TableCell>{user.total_invites}</TableCell>
                 <TableCell>
                   <Button variant="contained" color="secondary" onClick={() => { setEditingUser (user); setShowModal(true); }}>
                     Edit
@@ -129,7 +131,7 @@ const Users = () => {
         onClose={() => { setShowModal(false); setEditingUser(null); }}
         onSubmit={editingUser ? handleEdit : handleAdd}
         initialData={editingUser}
-        fields={["userID", "balance", "toWithdraw", "wallet", "stats", "value", "inviter"]}
+        fields={["userID", "balance", "toWithdraw", "wallet", "stats", "value", "inviter", "total_invites"]}
       />
     </div>
   );
