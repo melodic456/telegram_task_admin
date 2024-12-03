@@ -15,3 +15,4 @@ Auto --- add field link where to auto check for submission
 User new field  total invites inviter
 wallet setup
  
+[{ text: "💼 Manage Wallet Types", callback_data: "walletTypes" }]
