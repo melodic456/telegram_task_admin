@@ -16,3 +16,6 @@ User new field  total invites inviter
 wallet setup
  
 [{ text: "💼 Manage Wallet Types", callback_data: "walletTypes" }]
+
+
+when withdraw requested add wallet type to the withdraw request --add a scene to wallet types

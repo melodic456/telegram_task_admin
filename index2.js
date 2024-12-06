@@ -28,6 +28,11 @@ stage.register(wallet)
 
 const onWithdraw = new BaseScene('onWithdraw')
 stage.register(onWithdraw)
+
+
+const withdrawSelect = new BaseScene('withdrawSelect')
+stage.register(withdrawSelect)
+
 const broadcast = new BaseScene('broadcast')
 stage.register(broadcast)
 const refer = new BaseScene('refer')
@@ -965,6 +970,82 @@ bot.on('callback_query', async (ctx) => {
     const callbackData = ctx.callbackQuery.data;
     const userId = ctx.from.id;
 
+    if(callbackData === "cancel"){
+        try{
+            // db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:0.00 } }, { upsert: true })
+            ctx.deleteMessage()
+            ctx.replyWithMarkdown(
+       
+                               "*❌ Withdrawal Cancelled *", {parse_mode:'markdown', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
+       
+                           )
+            ctx.scene.leave('onWithdraw')
+         } catch(err) {
+           console.log(err)
+         }
+    }
+
+    if(callbackData === "approve"){
+        try{
+            db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw: ctx.session.toWithdraw } }, { upsert: true })
+            let admin = await db.collection('admindb').find({ admin: "admin" }).toArray()
+            let mini_with = admin[0].minimum
+            let currency = admin[0].cur
+            let pay = admin[0].paychannel
+            let bots = admin[0].withstat
+            let userbalance = await db.collection('balance').find({ userID: ctx.from.id }).toArray()
+            let toWith = userbalance[0].toWithdraw * 1
+            let balan = userbalance[0].balance * 1
+            let guy = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
+            // let inc = await db.collection('allUsers').find({ stats: "stats" }).toArray()
+            // let toinc = (inc[0].value * 1) + parseInt(toWith)
+            let ub = userbalance[0].balance * 1
+            let wallet = guy[0].wallet
+            if(toWith > balan){
+              ctx.deleteMessage()
+              ctx.replyWithMarkdown("*❌ Withdrawal Failed*")
+            }
+            if(toWith == 0){
+              ctx.deleteMessage()
+              ctx.replyWithMarkdown("*❌No Amount Available For Withdrawal*")
+              return 0;
+            } else {
+                var newbal = parseFloat(ub) - parseFloat(toWith)
+        
+                console.log(ctx.session.walletType);
+                db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { balance: newbal } }, { upsert: true })
+                db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:toWith } }, { upsert: true })
+                db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:toWith, balance: newbal } }, { upsert: true })
+                db.collection('withdrawals').insertOne({ userID: ctx.from.id, balance: newbal, toWithdraw: toWith, walletType: ctx.session.walletType, address: ctx.session.walletAddress, createdAt: new Date()  })
+                // db.collection('allUsers').updateOne({ stats: "stats" }, { $set: { value: parseFloat(toinc) } }, { upsert: true })
+                ctx.deleteMessage()
+                ctx.replyWithMarkdown(
+                                "*✅ New Withdrawal Processed ✅\n\n🚀Amount : " + toWith + " " + currency + "\n⛔ Wallet :* `" + ctx.session.walletType + "`\n*💡 Bot: @" + ctx.botInfo.username + "*", {parse_mode:'markdown', reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
+                            )
+                    bot.telegram.sendMessage(pay, "<b>✅ New Withdrawal Requested ✅\n\n🟢 User : <a href='tg://user?id=" + ctx.from.id + "'>" + ctx.from.id + "</a>\n\n🚀Amount : " + toWith + " " + currency + "\n⛔ Address :</b> <code>" + ctx.session.walletType + "</code>\n\n<b>💡 Bot: @" + ctx.botInfo.username + "</b>", { parse_mode: 'html' })
+                     let swg = admin[0].subwallet
+                     let mkey = admin[0].mkey
+                     let mid = admin[0].mid
+                     let comment = admin[0].comment
+                     let amount = toWith
+                     var url = 'https://job2all.xyz/api/index.php?mid='+mid+'&mkey='+mkey+'&guid='+swg+'&mob='+wallet+'&amount='+amount+'&info='+comment+'';
+                      axios.post(url)
+                      .then(res => {
+                        console.log("Result:\n"+res)
+        
+                      })
+                      .catch(error => {
+                        console.error(error)
+                      })
+                     //paytm(wallet, amount, swg, mkey, mid, comment);
+            }
+            ctx.scene.leave('onWithdraw')
+            ctx.scene.leave('withdrawSelect')
+          } catch(err) {
+            console.log(err)
+          }
+    }
+
     if(callbackData === 'wallet'){
         const admin = await db.collection('admindb').findOne({ admin: "admin" })
         const walletTypes = admin.walletTypes || []
@@ -1188,7 +1269,7 @@ bot.hears(/^\/start (.+[1-9]$)/, async (ctx) => {
         if (bots == 'Active') {
             let data = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
             if (data.length == 0 && ctx.from.id != +ctx.match[1]) { //IF USER IS NOT IN DATA
-                db.collection('allUsers').insertOne({ userID: ctx.from.id, balance: 0.00, toWithdraw: 0.00 })
+                db.collection('allUsers').insertOne({ userID: ctx.from.id, balance: 0.00, toWithdraw: 0.00, total_invites: 0})
                 db.collection('balance').insertOne({ userID: ctx.from.id, balance: 0.00,toWithdraw:0.00 })
                 db.collection('pendingUsers').insertOne({ userID: ctx.from.id, inviter: +ctx.match[1] })
                 bot.telegram.sendMessage(+ctx.match[1], "<b>🚧 New User On Your Invite Link : <a href='tg://user?id=" + ctx.from.id + "'>" + ctx.from.id + "</a></b>", { parse_mode: 'html' })
@@ -1216,7 +1297,7 @@ bot.start(async (ctx) => {
         let bots = admin[0].botstat
         if (bots == 'Active') {
             if (data.length == 0) { //IF USER IS NOT IN DATA
-                db.collection('allUsers').insertOne({ userID: ctx.from.id, balance: 0 ,toWithdraw:0.00})
+                db.collection('allUsers').insertOne({ userID: ctx.from.id, balance: 0 ,toWithdraw:0.00, total_invites: 0})
                 db.collection('balance').insertOne({ userID: ctx.from.id, balance: 0 ,toWithdraw:0.00})
                 db.collection('pendingUsers').insertOne({ userID: ctx.from.id })
 
@@ -1247,11 +1328,18 @@ bot.on("contact", async(ctx)=> {
             let channel = admin[0].channels
             var flag = 0;
             for (i in channel) {
+                try{
+
+                
                 let res = await bot.telegram.getChatMember(channel[i], ctx.from.id)
                 let result = res.status
                 if (result == 'creator' || result == 'administrator' || result == 'member') {
                     flag += 1
                 } else {
+                    flag = 0
+                }
+                } catch(error){
+                    console.log(error)
                     flag = 0
                 }
             }
@@ -1302,13 +1390,21 @@ bot.hears('💰 Balance', async (ctx) => {
             let channel = admin[0].channels
             var flag = 0;
             for (i in channel) {
+                try{
+
+                
                 let res = await bot.telegram.getChatMember(channel[i], ctx.from.id)
+                // let res = await bot.telegram.getChatMember(channel[i], '7374728124')
                 let result = res.status
                 if (result == 'creator' || result == 'administrator' || result == 'member') {
                     flag += 1
                 } else {
                     flag = 0
                 }
+            } catch(error){
+                console.log(error)
+                flag = 0
+            }
             }
             if (flag == channel.length) {
                 ctx.replyWithMarkdown(
@@ -1474,7 +1570,7 @@ bot.hears('💳 Withdraw', async (ctx) => {
                         ctx.replyWithMarkdown(
                             '*⚠️ Must Own AtLeast ' + mini_with + ' ' + currency + ' To Make Withdrawal*', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                         )
-                    } else if (!data[0].wallet) {
+                    } else if (!data[0].wallets) {
                         ctx.replyWithMarkdown(
                             '*⚠️ Set Your Wallet Using : *`🗂 Wallet`', { reply_markup: { keyboard: [['💰 Balance'], ['🙌🏻 Invite',  '🗂 Wallet'], ['💳 Withdraw', '📝 View Tasks']], resize_keyboard: true } }
                         )
@@ -1852,8 +1948,8 @@ onWithdraw.on('text', async (ctx) => {
             if (flag == channel.length) {
                 let userbalance = await db.collection('balance').find({ userID: ctx.from.id }).toArray()
                 let guy = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
-                let inc = await db.collection('allUsers').find({ stats: "stats" }).toArray()
-                let toinc = (inc[0].value * 1) + parseInt(ctx.message.text)
+                // let inc = await db.collection('allUsers').find({ stats: "stats" }).toArray()
+                // let toinc = (inc[0].value * 1) + parseInt(ctx.message.text)
                 let ub = userbalance[0].balance * 1
                 let wallet = guy[0].wallet
                 if (ctx.message.text == '⛔ Cancel'){
@@ -1893,10 +1989,12 @@ onWithdraw.on('text', async (ctx) => {
                     ctx.scene.leave('onWithdraw')
                     return 0;
                 } else {
-                    bot.telegram.sendMessage(ctx.from.id,"*🤘Withdrawal Confirmation\n\n🔰 Amount : "+ctx.message.text+" "+currency+"\n🗂 Wallet :* `"+wallet+"`\n*✌️Confirm Your Transaction By Clicking On '✅ Approve'*",{parse_mode:'Markdown', reply_markup: {inline_keyboard: [[{text:"✅ Approve",callback_data:"approve"},{text:"❌ Cancel",callback_data:"cancel"}]]}})
+                    // bot.telegram.sendMessage(ctx.from.id,"*🤘Withdrawal Confirmation\n\n🔰 Amount : "+ctx.message.text+" "+currency+"\n🗂 Wallet :* `"+wallet+"`\n*✌️Confirm Your Transaction By Clicking On '✅ Approve'*",{parse_mode:'Markdown', reply_markup: {inline_keyboard: [[{text:"✅ Approve",callback_data:"approve"},{text:"❌ Cancel",callback_data:"cancel"}]]}})
                     }
-                    db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw: ctx.message.text } }, { upsert: true })
+                    // db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw: ctx.message.text } }, { upsert: true })
+                    ctx.session.toWithdraw = ctx.message.text;
                     ctx.scene.leave('onWithdraw')
+                    ctx.scene.enter('withdrawSelect')
                     return 0;
             } else {
                 mustjoin(ctx)
@@ -1908,6 +2006,79 @@ onWithdraw.on('text', async (ctx) => {
         console.log(error)
     }
 })
+
+
+withdrawSelect.enter(async (ctx) => {
+    const walletTypes = await db.collection('admindb').find({ admin: "admin" }).toArray();
+  const walletTypesList = walletTypes[0].walletTypes;
+
+  // Show a list of wallet types
+  const inlineKeyboard = walletTypesList.map((type) => ({
+    text: type, 
+    callback_data: `walletType_${type}`
+  }));
+
+  // Send message asking user to select a wallet type
+  await bot.telegram.sendMessage(ctx.from.id, "*Please select a wallet type:*", {
+    parse_mode: 'Markdown',
+    reply_markup: {
+      inline_keyboard: [inlineKeyboard]
+    }
+
+});
+})
+
+withdrawSelect.on('callback_query', async (ctx) => {
+    // const { callbackQuery } = ctx;
+    // const { data } = callbackQuery.message
+    const callbackData = ctx.callbackQuery.data;
+    console.log(ctx.session.toWithdraw)
+    const walletType = callbackData.split('_')[1];
+    let admin = await db.collection('admindb').find({ admin: "admin" }).toArray()
+    // let mini_with = admin[0].minimum
+    let currency = admin[0].cur
+    
+    let guy = await db.collection('allUsers').find({ userID: ctx.from.id }).toArray()
+    // let wallets_already = guy[0].wallets
+    ctx.scene.leave('onWithdraw')
+    ctx.scene.leave('withdrawSelect');
+    
+    // const walletType = "Bitcoin"; // The wallet type you want to check
+
+    const address = Object.entries(guy[0].wallets || {}).find(([type]) => type === walletType)?.[1];
+
+    if (address) {
+        console.log(`${walletType} address is set: ${address}`);
+        ctx.session.walletType = walletType;
+        ctx.session.walletAddress = address;
+        bot.telegram.sendMessage(ctx.from.id,"*🤘Withdrawal Confirmation\n\n🔰 Amount : "+ctx.session.toWithdraw+" "+currency+"\n🗂 Wallet :* `"+walletType+"`\n*✌️Confirm Your Transaction By Clicking On '✅ Approve'*",{parse_mode:'Markdown', reply_markup: {inline_keyboard: [[{text:"✅ Approve",callback_data:"approve"},{text:"❌ Cancel",callback_data:"cancel"}]]}})
+
+    } else {
+        ctx.scene.leave('onWithdraw')
+        ctx.scene.leave('withdrawSelect');
+        console.log(`${walletType} address is not set.`);
+        ctx.deleteMessage()
+        bot.telegram.sendMessage(ctx.from.id, `${walletType} address is not set, Please set your ${walletType} address first.`);
+    }
+
+
+
+    
+})
+
+
+
+withdrawSelect.leave((ctx) => {
+    console.log("left withdraw select")
+    ctx.scene.leave('onWithdraw')
+})
+
+
+onWithdraw.leave((ctx) => {
+    console.log("left onwithdraw ")
+})
+
+
 bot.action("approve",async(ctx) => {
   try{
     let admin = await db.collection('admindb').find({ admin: "admin" }).toArray()
@@ -1933,10 +2104,12 @@ bot.action("approve",async(ctx) => {
       return 0;
     } else {
         var newbal = parseFloat(ub) - parseFloat(toWith)
+
+        console.log(ctx.session.walletType);
         db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { balance: newbal } }, { upsert: true })
         db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:toWith } }, { upsert: true })
         db.collection('allUsers').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:toWith, balance: newbal } }, { upsert: true })
-        db.collection('withdrawals').insertOne({ userID: ctx.from.id, balance: newbal, toWithdraw: toWith,createdAt: new Date()  })
+        db.collection('withdrawals').insertOne({ userID: ctx.from.id, balance: newbal, toWithdraw: toWith, walletType: ctx.session.walletType, createdAt: new Date()  })
         db.collection('allUsers').updateOne({ stats: "stats" }, { $set: { value: parseFloat(toinc) } }, { upsert: true })
         ctx.deleteMessage()
         ctx.replyWithMarkdown(
@@ -1960,6 +2133,7 @@ bot.action("approve",async(ctx) => {
              //paytm(wallet, amount, swg, mkey, mid, comment);
     }
     ctx.scene.leave('onWithdraw')
+    ctx.scene.leave('withdrawSelect')
   } catch(err) {
     console.log(err)
   }
@@ -1968,7 +2142,7 @@ bot.action("approve",async(ctx) => {
 
 bot.action("cancel",async(ctx)=> {
   try{
-     db.collection('balance').updateOne({ userID: ctx.from.id }, { $set: { toWithdraw:0.00 } }, { upsert: true })
+     db.collection('balance').updateOne({ userID: ctx.from.id }, { $inc: { toWithdraw: -ctx.session.toWithdraw } }, { upsert: true })
      ctx.deleteMessage()
      ctx.replyWithMarkdown(
 
